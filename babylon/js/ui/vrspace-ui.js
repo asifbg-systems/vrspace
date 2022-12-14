@@ -26,7 +26,8 @@ export class VRSpaceUI {
     /** Path to logo, null defaults to contentBase+/babylon/portal */
     this.portalPath = null;
     /** Portal file name, defaults to scene.gltf */
-    this.portalFile = "scene.gltf";
+    // this.portalFile = "scene.gltf";
+    this.portalFile = "BankHall - V2.gltf";
     /** portal mesh */
     this.portal = null;
     /** debug output enabled */
