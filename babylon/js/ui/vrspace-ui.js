@@ -68,6 +68,7 @@ export class VRSpaceUI {
       this.assetLoader = new AssetLoader(this.scene);
       // TODO figure out location of script
       var container = await BABYLON.SceneLoader.LoadAssetContainerAsync(this.logoDir(),this.logoFile,this.scene);
+      console.log(container, "container");
       this.logo = container.meshes[0];
       for ( var i = 0; i < container.meshes; i++ ) {
         container.meshes[i].checkCollisions = false;
