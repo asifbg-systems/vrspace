@@ -20,14 +20,14 @@ export class VRSpaceUI {
     /** Path to logo, null defaults to contentBase+/babylon (vrspace.org logo)*/
     this.logoPath = null;
     /** Logo file name, defaults to logo.glb */
-    this.logoFile = "logo.glb";
+    this.logoFile = "PortalRoom.gltf";
     /** vrspace.org logo mesh */
     this.logo = null;
     /** Path to logo, null defaults to contentBase+/babylon/portal */
     this.portalPath = null;
     /** Portal file name, defaults to scene.gltf */
     // this.portalFile = "scene.gltf";
-    this.portalFile = "BankHall - V2.gltf";
+    this.portalFile = "scene.gltf";
     /** portal mesh */
     this.portal = null;
     /** debug output enabled */
@@ -85,7 +85,7 @@ export class VRSpaceUI {
     if ( this.logoPath ) {
       return this.logoPath;
     }
-    return this.contentBase+"/babylon/";
+    return this.contentBase+"/babylon/logo/";
   }
   
   /** Returns portalPath if exists, defaults to contentBase+/babylon/portal */
