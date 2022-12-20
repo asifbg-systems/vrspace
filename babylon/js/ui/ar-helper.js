@@ -85,7 +85,7 @@ export class ARHelper {
   createMarker() {
     this.marker = new BABYLON.TransformNode("Marker", this.world.scene);
     this.logo = VRSPACEUI.copyMesh(VRSPACEUI.logo, this.marker);
-    this.logo.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
+    this.logo.scaling = new BABYLON.Vector3(0.002, 0.002, 0.002);
     this.logo.rotation = new BABYLON.Vector3(0,0,0);
     this.marker.rotationQuaternion = new BABYLON.Quaternion();
   }

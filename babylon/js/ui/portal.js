@@ -72,7 +72,8 @@ export class Portal {
 
     var plane = BABYLON.Mesh.CreatePlane("PortalEntrance:"+this.name, 1.60, this.scene);
     plane.parent = this.group;
-    plane.position = new BABYLON.Vector3(0,1.32,0);
+    plane.position = new BABYLON.Vector3(0,1,0);
+    plane.scaling = new BABYLON.Vector3(.8,.9,0);
     var observable = (e) => {
       if(e.type == BABYLON.PointerEventTypes.POINTERDOWN){
         var p = e.pickInfo;
