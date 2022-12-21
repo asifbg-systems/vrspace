@@ -200,13 +200,13 @@ export class AvatarSelection extends World {
   createSelection(selectionCallback) {
     this.selectionCallback = selectionCallback;
     VRSPACEUI.listMatchingFiles( this.characterDir(), (folders) => {
-      folders.push({name:"video"});
-      if ( this.customAvatarFrame ) {
-        folders.push({name:"custom"});
-      }
+      // folders.push({name:"video"});
+      // if ( this.customAvatarFrame ) {
+      //   folders.push({name:"custom"});
+      // }
       var buttons = new Buttons(this.scene,"Avatars",folders,(dir) => this.createAvatarSelection(dir),"name");
       buttons.setHeight(.5);
-      buttons.group.position = new BABYLON.Vector3(.5,2.2,-.5);
+      buttons.group.position = new BABYLON.Vector3(.05,2.02,-.05);
       buttons.select(0);
       this.mainButtons = buttons;
     });
@@ -573,12 +573,14 @@ export class AvatarSelection extends World {
     if ( this.beforeEnter ) {
       this.beforeEnter(this);
     }
+    console.log(worldUrl+'/'+worldScript);
     import(worldUrl+'/'+worldScript).then((world)=>{
       var afterLoad = (world) => {
         world.serverUrl = this.serverUrl;
         
-        console.log(world);
-        
+        console.log("world: ", world);
+        console.log("loadMash: ", world?.loadMash);
+        world?.loadMash();
         // TODO refactor this to WorldManager
         this.worldManager = new WorldManager(world);
         this.worldManager.customOptons = this.customOptions;
@@ -605,6 +607,7 @@ export class AvatarSelection extends World {
         this.worldManager.enter( 
           myProperties
         ).then( (welcome) => {
+          console.log('welcome: ', welcome);
           // CHECKME better way to flag publishing video?
           this.worldManager.pubSub(welcome.client, 'video' === avatarUrl);
           if ( this.character ) {

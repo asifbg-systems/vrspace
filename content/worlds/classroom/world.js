@@ -1,9 +1,11 @@
 import { World, Screencast } from '../../../babylon/js/vrspace-min.js';
 
+
 export class Classroom extends World {
   constructor() {
     super();
     this.file = null;
+    alert(this.loadMash)
     this.worldObjects = {
       "scene.gltf":{
         instances:[
@@ -20,7 +22,8 @@ export class Classroom extends World {
             rotation:{x:0,y:5.69,z:0}
           }
         ]
-      }
+      },
+      loadMesh: this.loadMash
     }
   }
   async createCamera() {
@@ -125,6 +128,24 @@ export class Classroom extends World {
     this.screencast.videoMesh.position = new BABYLON.Vector3(0, 3, -.4);
     this.screencast.videoMesh.rotation = new BABYLON.Vector3(0, Math.PI, 0);
     this.screencast.init();
+
+    
+  }
+
+  async loadMash(){
+    const { meshes } = await new BABYLON.SceneLoader.ImportMeshAsync(
+
+      "",
+    
+      "./",
+    
+      "barrel.glb"
+    
+    );
+
+    console.log('mashes: ', meshes);
+
+    meshes[0].position = new BABYLON.Vector3(-0.04, 1, 1.2);
   }
 
 }

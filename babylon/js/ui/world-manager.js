@@ -672,7 +672,9 @@ export class WorldManager {
     return new Promise( (resolve, reject) => {
       var afterEnter = (welcome) => {
         VRSPACE.removeWelcomeListener(afterEnter);
+        console.log('world.entered: ', this.world)
         this.world.entered(welcome)
+        this?.world?.loadMash();
         if ( this.remoteLogging ) {
           this.enableRemoteLogging();
         }
@@ -693,6 +695,7 @@ export class WorldManager {
         } else {
           VRSPACE.sendCommand("Session");
           this.world.entered(welcome)
+          this?.world?.loadMash();
           resolve(welcome);
         }
       };

@@ -20,7 +20,7 @@ export class VRSpaceUI {
     /** Path to logo, null defaults to contentBase+/babylon (vrspace.org logo)*/
     this.logoPath = null;
     /** Logo file name, defaults to logo.glb */
-    this.logoFile = "PortalRoom.gltf";
+    this.logoFile = "PortalTexured.glb";
     /** vrspace.org logo mesh */
     this.logo = null;
     /** Path to logo, null defaults to contentBase+/babylon/portal */
