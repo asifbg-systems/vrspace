@@ -1,4 +1,4 @@
-import { Label } from './label.js';
+import { Label } from "./label.js";
 
 /** Menu consisting of vertical buttons in 3D space and associated labels.
  */
@@ -58,19 +58,29 @@ export class Buttons {
   /** Display the menu, adds a pointer observable */
   display() {
     // CHECKME: better use emissive color?
-    this.selectedMaterial = new BABYLON.StandardMaterial("selectedButtonMaterial", this.scene);
+    this.selectedMaterial = new BABYLON.StandardMaterial(
+      "selectedButtonMaterial",
+      this.scene
+    );
     this.selectedMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    this.selectedMaterial.emissiveColor = new BABYLON.Color3(.4, .8, .4);
+    this.selectedMaterial.emissiveColor = new BABYLON.Color3(0.4, 0.8, 0.4);
     this.selectedMaterial.disableLighting = true;
     this.materials.push(this.selectedMaterial);
-    this.unselectedMaterial = new BABYLON.StandardMaterial("unselectedButtonMaterial", this.scene);
+    this.unselectedMaterial = new BABYLON.StandardMaterial(
+      "unselectedButtonMaterial",
+      this.scene
+    );
     this.unselectedMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    this.unselectedMaterial.emissiveColor = new BABYLON.Color3(.2, .2, .2);
+    this.unselectedMaterial.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
     this.unselectedMaterial.disableLighting = true;
     this.materials.push(this.unselectedMaterial);
 
     if (this.title && this.title.length > 0) {
-      var titleLabel = new Label(this.title, new BABYLON.Vector3(this.title.length, this.spacing * 2, 0), this.group);
+      var titleLabel = new Label(
+        this.title,
+        new BABYLON.Vector3(this.title.length, this.spacing * 3, 0),
+        this.group
+      );
       titleLabel.height = 2;
       titleLabel.horizontalAlignment = this.horizontalAlignment;
       titleLabel.verticalAlignment = this.verticalAlignment;
@@ -79,29 +89,44 @@ export class Buttons {
     }
 
     for (var i = 0; i < this.options.length; i++) {
-      if (i < 5) {
-        if (this.property) {
-          var option = this.options[i][this.property];
-          console.log("this.property: ", this.property)
-        } else {
-          var option = this.options[i];
-          console.log("options: ", this.options[i])
+      if (this.options[i][this.property] != "other") {
+        if (i < 5) {
+          if (this.property) {
+            var option = this.options[i][this.property];
+          } else {
+            var option = this.options[i];
+          }
+          this.groupWidth = Math.max(this.groupWidth, option.length);
 
+          var buttonLabel = new Label(
+            option,
+            new BABYLON.Vector3(
+              option.length / 2 + this.buttonHeight,
+              -i * this.spacing,
+              0
+            ),
+            this.group
+          );
+          buttonLabel.horizontalAlignment = this.horizontalAlignment;
+          buttonLabel.verticalAlignment = this.verticalAlignment;
+          buttonLabel.display();
+          this.controls.push(buttonLabel);
+
+          var button = BABYLON.MeshBuilder.CreateCylinder(
+            "Button" + option,
+            { height: 0.1, diameter: this.buttonHeight * 0.8 },
+            this.scene
+          );
+          button.material = this.unselectedMaterial;
+          button.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+          button.position = new BABYLON.Vector3(
+            this.buttonHeight / 2,
+            -i * this.spacing,
+            0
+          );
+          button.parent = this.group;
+          this.buttons.push(button);
         }
-        this.groupWidth = Math.max(this.groupWidth, option.length);
-
-        var buttonLabel = new Label(option, new BABYLON.Vector3(option.length / 2 + this.buttonHeight, -i * this.spacing, 0), this.group);
-        buttonLabel.horizontalAlignment = this.horizontalAlignment;
-        buttonLabel.verticalAlignment = this.verticalAlignment;
-        buttonLabel.display();
-        this.controls.push(buttonLabel);
-
-        var button = BABYLON.MeshBuilder.CreateCylinder("Button" + option, { height: .1, diameter: this.buttonHeight * .5 }, this.scene);
-        button.material = this.unselectedMaterial;
-        button.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-        button.position = new BABYLON.Vector3(this.buttonHeight / 2, -i * this.spacing, 0);
-        button.parent = this.group;
-        this.buttons.push(button);
       }
     }
 
@@ -125,11 +150,22 @@ export class Buttons {
       console.log("Group width: " + this.groupWidth);
       var backgroundWidth = this.groupWidth / 1.8;
       var backgroundHeight = this.options.length * this.spacing;
-      var backgroundOffset = this.buttonHeight * .8; // same as button cylinder diameter
-      var backPlane = BABYLON.MeshBuilder.CreatePlane("ButtonBackground:" + this.title, { height: backgroundHeight, width: backgroundWidth }, this.scene);
-      backPlane.position = new BABYLON.Vector3(backgroundWidth / 2 + backgroundOffset, -backgroundHeight / 2 + this.spacing / 2, .2);
+      var backgroundOffset = this.buttonHeight * 0.8; // same as button cylinder diameter
+      var backPlane = BABYLON.MeshBuilder.CreatePlane(
+        "ButtonBackground:" + this.title,
+        { height: backgroundHeight, width: backgroundWidth },
+        this.scene
+      );
+      backPlane.position = new BABYLON.Vector3(
+        backgroundWidth / 2 + backgroundOffset,
+        -backgroundHeight / 2 + this.spacing / 2,
+        0.2
+      );
       backPlane.parent = this.group;
-      var backgroundMaterial = new BABYLON.StandardMaterial("unselectedButtonMaterial", this.scene);
+      var backgroundMaterial = new BABYLON.StandardMaterial(
+        "unselectedButtonMaterial",
+        this.scene
+      );
       backgroundMaterial.disableLighting = true;
       //backgroundMaterial.alpha = 0.5; // produces weird transparency effects
       this.materials.push(backgroundMaterial);
@@ -165,4 +201,3 @@ export class Buttons {
     this.group.isEnabled = true;
   }
 }
-

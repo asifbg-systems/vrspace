@@ -72,7 +72,8 @@ export class Portal {
 
     var plane = BABYLON.Mesh.CreatePlane("PortalEntrance:"+this.name, 1.60, this.scene);
     plane.parent = this.group;
-    plane.position = new BABYLON.Vector3(0,1.32,0);
+    plane.position = new BABYLON.Vector3(0,1.4,0);
+    plane.scaling = new BABYLON.Vector3(1,1.1,1);
     var observable = (e) => {
       if(e.type == BABYLON.PointerEventTypes.POINTERDOWN){
         var p = e.pickInfo;
@@ -104,7 +105,7 @@ export class Portal {
 
     this.title = BABYLON.MeshBuilder.CreatePlane("Text:"+this.name, {height:1,width:2}, this.scene);
     this.title.parent = this.group;
-    this.title.position = new BABYLON.Vector3(0,2.5,0);
+    this.title.position = new BABYLON.Vector3(0,3,0);
     this.title.isVisible = false;
 
     var titleTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(this.title, 128,128);
