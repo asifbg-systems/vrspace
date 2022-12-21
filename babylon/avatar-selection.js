@@ -570,7 +570,7 @@ export class AvatarSelection extends World {
       var angleIncrement = (2 * Math.PI) / worlds.length;
       var angle = 0;
       for (var i = 0; i < worlds.length; i++) {
-        if (worlds[i].name === "Meta-Bank" || worlds[i].name === "classroom" || worlds[i].name === "HOF") {
+        if (worlds[i].name === "Meta-Bank" || worlds[i].name === "aladin" || worlds[i].name === "HOF") {
           var x = Math.sin(angle) * radius;
           var z = Math.cos(angle) * radius;
           // heavy performance impact
