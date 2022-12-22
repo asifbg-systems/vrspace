@@ -387,35 +387,40 @@ export class AvatarSelection extends World {
   }
 
   loadCharacter(dir, file = "scene.gltf") {
-    this.tracking = false;
-    this.indicator.add(dir);
-    this.indicator.animate();
-    console.log("Loading character from " + dir.name);
-    var loaded = new Avatar(this.scene, dir, this.shadowGenerator);
-    loaded.file = file;
-    loaded.animations = this.customAnimations;
-    // resize the character to real-world height
-    if (this.inXR) {
-      this.userHeight = this.vrHelper.camera().realWorldHeight;
+    try{
+
+      this.tracking = false;
+      this.indicator.add(dir);
+      this.indicator.animate();
+      console.log("Loading character from " + dir.name);
+      var loaded = new Avatar(this.scene, dir, this.shadowGenerator);
+      loaded.file = file;
+      loaded.animations = this.customAnimations;
+      // resize the character to real-world height
+      if (this.inXR) {
+        this.userHeight = this.vrHelper.camera().realWorldHeight;
+      }
+      loaded.userHeight = this.userHeight;
+      loaded.animateArms = false;
+      loaded.debug = this.debug;
+      loaded.load((c) => {
+        this.removeVideoAvatar();
+        this.tracking = true;
+        this.indicator.remove(dir);
+        if (!this.character) {
+          this.addCharacterButtons();
+          this.portalsEnabled(true);
+        }
+        this.character = loaded.replace(this.character);
+        this.character.setName(this.userName);
+        this.animationButtons(this.character);
+        if (this.selectionCallback) {
+          this.selectionCallback(this.character);
+        }
+      });
+    }catch(e){
+      console.log('e:::: ', e);
     }
-    loaded.userHeight = this.userHeight;
-    loaded.animateArms = false;
-    loaded.debug = this.debug;
-    loaded.load((c) => {
-      this.removeVideoAvatar();
-      this.tracking = true;
-      this.indicator.remove(dir);
-      if (!this.character) {
-        this.addCharacterButtons();
-        this.portalsEnabled(true);
-      }
-      this.character = loaded.replace(this.character);
-      this.character.setName(this.userName);
-      this.animationButtons(this.character);
-      if (this.selectionCallback) {
-        this.selectionCallback(this.character);
-      }
-    });
   }
 
   setMyName(name) {
@@ -570,7 +575,7 @@ export class AvatarSelection extends World {
       var angleIncrement = (2 * Math.PI) / worlds.length;
       var angle = 0;
       for (var i = 0; i < worlds.length; i++) {
-        if (worlds[i].name === "Meta-Bank" || worlds[i].name === "aladin" || worlds[i].name === "HOF") {
+        if (worlds[i].name === "Meta-Bank" || worlds[i].name === "aladin" || worlds[i].name === "HOF" || worlds[i].name === "classroom") {
           var x = Math.sin(angle) * radius;
           var z = Math.cos(angle) * radius;
           // heavy performance impact

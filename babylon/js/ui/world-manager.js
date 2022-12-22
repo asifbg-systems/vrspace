@@ -674,7 +674,9 @@ export class WorldManager {
         VRSPACE.removeWelcomeListener(afterEnter);
         console.log('world.entered: ', this.world)
         this.world.entered(welcome)
-        this?.world?.loadMash();
+        if(this?.world?.loadMash){
+          this?.world?.loadMash();
+        }
         if ( this.remoteLogging ) {
           this.enableRemoteLogging();
         }

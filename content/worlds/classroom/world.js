@@ -1,11 +1,10 @@
-import { World, Screencast } from '../../../babylon/js/vrspace-min.js';
+import { World, Screencast, Desert } from '../../../babylon/js/vrspace-min.js';
 
 
 export class Classroom extends World {
   constructor() {
     super();
     this.file = null;
-    alert(this.loadMash)
     this.worldObjects = {
       "scene.gltf":{
         instances:[
@@ -23,7 +22,6 @@ export class Classroom extends World {
           }
         ]
       },
-      loadMesh: this.loadMash
     }
   }
   async createCamera() {
@@ -132,20 +130,34 @@ export class Classroom extends World {
     
   }
 
-  async loadMash(){
-    const { meshes } = await new BABYLON.SceneLoader.ImportMeshAsync(
+  // async loadMash(){
+  //   const { meshes } = await new BABYLON.SceneLoader.ImportMeshAsync(
 
-      "",
+  //     "",
     
-      "./",
+  //     "./",
     
-      "barrel.glb"
+  //     "barrel.glb"
     
-    );
+  //   );
 
-    console.log('mashes: ', meshes);
+  //   console.log('mashes: ', meshes);
 
-    meshes[0].position = new BABYLON.Vector3(-0.04, 1, 1.2);
+  //   meshes[0].position = new BABYLON.Vector3(-0.04, 1, 1.2);
+  // }
+
+
+  createTerrain() {
+    this.terrainMaterial = new BABYLON.StandardMaterial("terrainMaterial", scene)
+    var terrainTexture = new BABYLON.Texture(this.assetPath("textures/sand_houseslambert12_baseColor.png"), scene);
+    this.terrainMaterial.ambientTexture = terrainTexture;
+    this.terrainMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    terrainTexture.uScale = 1;
+    terrainTexture.vScale = terrainTexture.uScale;
+    
+    this.terrain = new Desert( this, this.terrainMaterial );
+    this.terrain.checkCollisions = false;
+    this.terrain.createTerrain();
   }
 
 }

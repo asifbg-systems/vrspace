@@ -385,10 +385,11 @@ export class VRSpace {
         webSocketProtocol = 'wss';
       }
       //var end = url.lastIndexOf('/'); // localhost:8080/babylon/vrspace
-      let end = url.indexOf('/', start+2); // localhost:8080/vrspace      
+      let end = url.indexOf('/', start+2); // localhost:8080/vrspace
       url = webSocketProtocol+':'+url.substring(start,end)+'/vrspace'; // ws://localhost:8080/vrspace
     }
     this.log("Connecting to "+url);
+    debugger;
     this.ws = new WebSocket(url);
     this.ws.onopen = () => {
       this.connectionListeners.forEach((listener)=>listener(true));
