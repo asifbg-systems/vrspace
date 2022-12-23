@@ -9,7 +9,7 @@ export class Classroom extends World {
       "scene.gltf":{
         instances:[
           {
-            scale:{x:0.3,y:0.3,z:0.3}
+            scale:{x:0,y:0,z:0}
           }
         ]
       },

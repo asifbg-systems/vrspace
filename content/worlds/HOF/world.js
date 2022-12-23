@@ -5,7 +5,7 @@ export class Classroom extends World {
     super();
     this.file = null;
     this.worldObjects = {
-      "HOF-SM.glb":{
+      "HOF-NEW.glb":{
         instances:[
           {
             scale:{x:1,y:1,z:1},

@@ -389,7 +389,6 @@ export class VRSpace {
       url = webSocketProtocol+':'+url.substring(start,end)+'/vrspace'; // ws://localhost:8080/vrspace
     }
     this.log("Connecting to "+url);
-    debugger;
     this.ws = new WebSocket(url);
     this.ws.onopen = () => {
       this.connectionListeners.forEach((listener)=>listener(true));
