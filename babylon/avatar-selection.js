@@ -388,7 +388,6 @@ export class AvatarSelection extends World {
 
   loadCharacter(dir, file = "scene.gltf") {
     try{
-
       this.tracking = false;
       this.indicator.add(dir);
       this.indicator.animate();
@@ -413,6 +412,7 @@ export class AvatarSelection extends World {
         }
         this.character = loaded.replace(this.character);
         this.character.setName(this.userName);
+        this.character.rootMesh.position = new BABYLON.Vector3(0,0.3,0)
         this.animationButtons(this.character);
         if (this.selectionCallback) {
           this.selectionCallback(this.character);
@@ -554,6 +554,7 @@ export class AvatarSelection extends World {
     mirrorButton.node.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
     mirrorButton.onPointerDownObservable.add(() => {
       // TODO: rotate character, (un)set mirror var
+      console.log('this.character: ', this.character);
       if (mirrorButton.text == "Mirroring") {
         mirrorButton.text = "Copying";
         this.mirror = false;
