@@ -5,7 +5,6 @@ export class Classroom extends World {
   constructor() {
     super();
     this.file = null;
-    alert(this.loadMash)
     this.worldObjects = {
       "scene.gltf":{
         instances:[
@@ -23,7 +22,6 @@ export class Classroom extends World {
           }
         ]
       },
-      loadMesh: this.loadMash
     }
   }
   async createCamera() {
@@ -131,23 +129,6 @@ export class Classroom extends World {
 
     
   }
-
-  async loadMash(){
-    const { meshes } = await new BABYLON.SceneLoader.ImportMeshAsync(
-
-      "",
-    
-      "./",
-    
-      "barrel.glb"
-    
-    );
-
-    console.log('mashes: ', meshes);
-
-    meshes[0].position = new BABYLON.Vector3(-0.04, 1, 1.2);
-  }
-
 }
 
 export const WORLD = new Classroom();
