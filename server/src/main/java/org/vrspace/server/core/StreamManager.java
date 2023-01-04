@@ -67,19 +67,19 @@ public class StreamManager {
         .role(OpenViduRole.PUBLISHER).data(client.getId().toString()).build();
     // token is something like
     // wss://localhost:4443?sessionId=cave&token=tok_W1LlxOQElNQGcSIw&role=PUBLISHER&version=2.15.0
-    String token = "https://openvidu.kudoscards.digital/";
-    // try {
-    //   token = session.createConnection(connectionProperties).getToken();
-    // } catch (OpenViduHttpException e) {
-    //   // 404 here means no session:
-    //   if (e.getStatus() == 404) {
-    //     log.error("Error generating token - session not found. Creating new session", e);
-    //     session = startStreamingSession(session.getSessionId());
-    //     token = session.createConnection(connectionProperties).getToken();
-    //   } else {
-    //     throw e;
-    //   }
-    // }
+    String token = null;
+    try {
+      token = session.createConnection(connectionProperties).getToken();
+    } catch (OpenViduHttpException e) {
+      // 404 here means no session:
+      if (e.getStatus() == 404) {
+        log.error("Error generating token - session not found. Creating new session", e);
+        session = startStreamingSession(session.getSessionId());
+        token = session.createConnection(connectionProperties).getToken();
+      } else {
+        throw e;
+      }
+    }
     return token;
   }
 
