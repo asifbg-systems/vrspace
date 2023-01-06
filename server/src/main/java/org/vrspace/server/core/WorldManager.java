@@ -286,13 +286,13 @@ public class WorldManager {
   }
 
   public Welcome enter(Client client, World world) {
-    if (client.getWorld() != null) {
-      if (client.getWorld().equals(world)) {
-        throw new IllegalArgumentException("Already in world " + world);
-      }
+  //  if (client.getWorld() != null) {
+  //    if (client.getWorld().equals(world)) {
+  //      throw new IllegalArgumentException("Already in world " + world);
+  //    }
       // exit current world first
-      exit(client);
-    }
+  //    exit(client);
+  //  }
     // create audio stream
     streamManager.join(client, world);
 
