@@ -71,6 +71,7 @@ public class StreamManager {
     // token is something like
     // wss://localhost:4443?sessionId=cave&token=tok_W1LlxOQElNQGcSIw&role=PUBLISHER&version=2.15.0
     String token = null;
+   log.info("Generate Token for client " , client);
     try {
       token = session.createConnection(connectionProperties).getToken();
     } catch (OpenViduHttpException e) {
@@ -79,6 +80,8 @@ public class StreamManager {
         log.error("Error generating token - session not found. Creating new session", e);
         session = startStreamingSession(session.getSessionId());
         token = session.createConnection(connectionProperties).getToken();
+       log.info("New Token "+ token);
+       log.info("Session " +  session);
       } else {
         throw e;
       }
@@ -91,6 +94,7 @@ public class StreamManager {
     if (client.getToken(serviceId) != null && client.getWorld() != null) {
       String name ="classroom";// client.getWorld().getName();
       Session session = sessions.get(name);
+      log.info("Name" + name);
       if (session != null) {
         session.fetch();
         List<Connection> activeConnections = session.getActiveConnections();
@@ -120,6 +124,10 @@ public class StreamManager {
    * @param world
    */
   public void join(Client client, World world) {
+    log.info("openvidu " + openViduUrl);
+    log.info("Secret " + openViduSecret);
+    log.info("Client is " + client);
+    log.info("World is " + world.getName());
     if (!"none".equals(openViduUrl) && !"none".equals(openViduSecret)) {
      // try {
      //   disconnect(client);

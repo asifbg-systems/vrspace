@@ -270,7 +270,7 @@ public class WorldManager {
   public World defaultWorld() {
     if (defaultWorld == null) {
       synchronized (this) {
-        defaultWorld = db.getWorldByName("default");
+        defaultWorld = db.getWorldByName("classroom");
         if (defaultWorld == null) {
           defaultWorld = db.save(new World("default", true));
           log.info("Created default world: " + defaultWorld);
@@ -281,11 +281,16 @@ public class WorldManager {
   }
 
   public Welcome enter(Client client, String worldName) {
+   log.info("Enter World name " + worldName);
+   log.info("Enter Client " + client); 
     World world = getOrCreateWorld(worldName);
     return enter(client, world);
   }
 
   public Welcome enter(Client client, World world) {
+  log.info("Client " +client);
+  //log.info("Client World " , client.getWorld());
+  log.info("World " +world);
   //  if (client.getWorld() != null) {
   //    if (client.getWorld().equals(world)) {
   //      throw new IllegalArgumentException("Already in world " + world);
