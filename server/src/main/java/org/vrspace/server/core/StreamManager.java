@@ -92,9 +92,9 @@ public class StreamManager {
   public void disconnect(Client client) throws OpenViduException {
     // client is only connected if it has session token
     if (client.getToken(serviceId) != null && client.getWorld() != null) {
-      String name ="classroom";// client.getWorld().getName();
+      String name =client.getWorld().getName();
       Session session = sessions.get(name);
-      log.info("Name" + name);
+      log.info("Name is in disconnect " + name);
       if (session != null) {
         session.fetch();
         List<Connection> activeConnections = session.getActiveConnections();

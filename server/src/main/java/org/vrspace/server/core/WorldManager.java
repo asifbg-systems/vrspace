@@ -270,7 +270,7 @@ public class WorldManager {
   public World defaultWorld() {
     if (defaultWorld == null) {
       synchronized (this) {
-        defaultWorld = db.getWorldByName("classroom");
+        defaultWorld = db.getWorldByName("default");
         if (defaultWorld == null) {
           defaultWorld = db.save(new World("default", true));
           log.info("Created default world: " + defaultWorld);
