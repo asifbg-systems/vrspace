@@ -175,7 +175,7 @@ export class Classroom extends World {
   // executed once connected to the server and entered the space
   entered(welcome) {
     this.screencast = new Screencast(this, 'teacher');
-    this.screencast.screenShareMesh.position = new BABYLON.Vector3(2, 1.5, -17);
+    this.screencast.screenShareMesh.position = new BABYLON.Vector3(5, 1.5, -17);
     this.screencast.screenShareMesh.rotation = new BABYLON.Vector3(0, Math.PI, 0);
     this.screencast.videoMesh.position = new BABYLON.Vector3(0, 1.5, -17);
     this.screencast.videoMesh.rotation = new BABYLON.Vector3(0, Math.PI, 0);
