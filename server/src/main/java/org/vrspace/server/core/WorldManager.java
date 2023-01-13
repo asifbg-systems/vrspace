@@ -318,9 +318,10 @@ public class WorldManager {
     if (client.getWorld() != null) {
       if (client.getWorld().equals(world)) {
         throw new IllegalArgumentException("Already in world " + world);
-      }
+     // }
       // exit current world first
       exit(client);
+      }
     }
     // create audio stream
     streamManager.join(client, world);
