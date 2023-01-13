@@ -118,11 +118,11 @@ public class StreamManager {
    */
   public void join(Client client, World world) {
     if (!"none".equals(openViduUrl) && !"none".equals(openViduSecret)) {
-      try {
-        disconnect(client);
-      } catch (OpenViduException e) {
-        log.error("Failed to disconnect client " + client, e);
-      }
+    //  try {
+    //    disconnect(client);
+    //  } catch (OpenViduException e) {
+    //    log.error("Failed to disconnect client " + client, e);
+    //  }
       try {
         Session session = startStreamingSession(world.getName());
         try {
