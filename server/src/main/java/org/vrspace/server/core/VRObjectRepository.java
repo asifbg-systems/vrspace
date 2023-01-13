@@ -21,6 +21,7 @@ import org.vrspace.server.obj.Entity;
 import org.vrspace.server.obj.GltfModel;
 import org.vrspace.server.obj.Ownership;
 import org.vrspace.server.obj.Point;
+import org.vrspace.server.obj.TerrainPoint;
 import org.vrspace.server.obj.VRObject;
 import org.vrspace.server.obj.World;
 
@@ -145,22 +146,29 @@ public interface VRObjectRepository extends Neo4jRepository<Entity, Long>, VRSpa
     return ret;
   }
 
-  // WARNING this doesn't return full, useful owned VRObject - position and other
-  // members are missing
+  /**
+   * WARNING this doesn't return full, useful owned VRObject - position and other
+   * members are missing - use getOwned instead
+   * 
+   * @param clientId
+   * @return list of all ownerships
+   */
   @Query("MATCH (obj:VRObject)<-[owned:IS_OWNED]-(o:Ownership)-[owns:IS_OWNER]->(c:Client)"
       + " WHERE ID(c) = $clientId RETURN o,owns,c,owned,obj")
-  List<Ownership> getOwnership(long clientId);
+  List<Ownership> getOwnerships(long clientId);
 
   default List<Ownership> getOwned(long ownerId) {
     List<Ownership> ret = new ArrayList<>();
-    for (Ownership o : getOwnership(ownerId)) {
+    for (Ownership o : getOwnerships(ownerId)) {
       ret.add(get(Ownership.class, o.getId()));
     }
     return ret;
   }
 
-  // WARNING this doesn't return full, useful owned VRObject - position and other
-  // members are missing
+  /**
+   * WARNING this doesn't return full, useful owned VRObject - position and other
+   * members are missing - use getOwnership instead
+   */
   @Query("MATCH (obj:VRObject)<-[owned:IS_OWNED]-(o:Ownership)-[owns:IS_OWNER]->(c:Client)"
       + " WHERE ID(c) = $ownerId AND ID(obj) = $ownedId RETURN o,owns,c,owned,obj")
   Optional<Ownership> findOwnership(long ownerId, long ownedId);
@@ -172,4 +180,11 @@ public interface VRObjectRepository extends Neo4jRepository<Entity, Long>, VRSpa
     }
     return null;
   }
+
+  @Query("MATCH (tp:TerrainPoint)-[r:IS_POINT_OF]->(t:Terrain) WHERE ID(t)=$terrainId RETURN tp")
+  Set<TerrainPoint> getTerrainPoints(Long terrainId);
+
+  @Query("MATCH (tp:TerrainPoint)-[r:IS_POINT_OF]->(t:Terrain) WHERE ID(t)=$terrainId and tp.index=$index RETURN tp")
+  TerrainPoint getTerrainPoint(Long terrainId, Long index);
+
 }

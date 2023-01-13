@@ -592,14 +592,14 @@ public class DBIT {
     // confirm owned object persist along with client:
     Client result = repo.getClient(c1.getId());
     System.err.println(result);
-    System.err.println(repo.getOwnership(result.getId()));
-    VRObject owned = repo.getOwnership(result.getId()).iterator().next().getOwned();
+    System.err.println(repo.getOwnerships(result.getId()));
+    VRObject owned = repo.getOwned(result.getId()).iterator().next().getOwned();
     System.err.println(owned);
     assertEquals(o1, owned);
-    // we don't have any of member entities retrieved here - should we?
-    // assertEquals(o1.getPosition(), owned.getPosition());
-    // assertEquals(o1.getRotation(), owned.getRotation());
-    // assertEquals(o1.getScale(), owned.getScale());
+    // ensure deep copy is returned
+    assertEquals(o1.getPosition(), owned.getPosition());
+    assertEquals(o1.getRotation(), owned.getRotation());
+    assertEquals(o1.getScale(), owned.getScale());
 
     // change the object:
     o1.getPosition().setX(11);
@@ -623,6 +623,8 @@ public class DBIT {
   public void testTerrain() throws Exception {
     World world = new World("test");
     world = repo.save(world);
+    TerrainManager tm = new TerrainManager(repo);
+
     Terrain t = new Terrain();
     t.setWorld(world);
     t.setActive(true);
@@ -631,10 +633,13 @@ public class DBIT {
     change.setIndex(100);
     change.setPoint(new Point(1, 2, 3));
     t.setChange(change);
-    t.changed();
-    t = repo.save(t);
+
+    VREvent ev = new VREvent(t);
+    // t = repo.save(t);
+    tm.persist(ev);
 
     Terrain result = repo.get(Terrain.class, t.getId());
+    tm.postLoad(result);
     System.err.println(result);
     assertNotNull(result.getPoints());
     assertEquals(1, result.getPoints().size());

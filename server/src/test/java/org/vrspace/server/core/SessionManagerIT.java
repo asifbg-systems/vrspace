@@ -213,7 +213,7 @@ public class SessionManagerIT {
     sendMessage(string);
     errorMsg = getMessage();
     assertTrue(errorMsg.contains("ERROR"));
-    assertTrue(errorMsg.contains("Object not found in the scene"));
+    assertTrue(errorMsg.contains("Unknown object"));
   }
 
   private void sendMessage(WebSocketSession session, String msg) throws Exception {
@@ -287,8 +287,8 @@ public class SessionManagerIT {
     assertFalse(obj1.get().getPosition().getId().equals(obj2.get().getPosition().getId()));
 
     // verify ownership
-    assertNotNull(repo.getOwnership(testUser.getId()));
-    assertEquals(2, repo.getOwnership(testUser.getId()).size());
+    assertNotNull(repo.getOwnerships(testUser.getId()));
+    assertEquals(2, repo.getOwnerships(testUser.getId()).size());
 
     // verify scene members match response to add command
     int ok = 0;
@@ -322,7 +322,7 @@ public class SessionManagerIT {
     assertTrue(repo.findById(VRObject.class, ids.get(1).values().iterator().next()).isPresent());
 
     // verify ownership
-    assertEquals(1, repo.getOwnership(testUser.getId()).size());
+    assertEquals(1, repo.getOwnerships(testUser.getId()).size());
 
     // verify scene members
     testUser.getScene().update();

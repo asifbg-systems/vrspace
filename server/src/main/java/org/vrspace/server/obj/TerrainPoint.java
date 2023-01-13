@@ -1,6 +1,9 @@
 package org.vrspace.server.obj;
 
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,19 +19,24 @@ import lombok.ToString;
  *
  */
 @Data
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = false)
 @Node
 public class TerrainPoint extends Embedded {
+  @JsonIgnore
+  @Relationship(type = "IS_POINT_OF", direction = Relationship.Direction.OUTGOING)
+  @EqualsAndHashCode.Include
+  private Terrain terrain;
   @EqualsAndHashCode.Include
   private Long index;
   private double x;
   private double y;
   private double z;
 
-  public TerrainPoint(Long index, Point point) {
+  public TerrainPoint(Terrain t, Long index, Point point) {
+    this.terrain = t;
     this.index = index;
     this.x = point.getX();
     this.y = point.getY();
