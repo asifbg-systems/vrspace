@@ -913,7 +913,7 @@ export class Avatar {
   Stand up straight, at the ground, legs fully stretched
    */
   standUp() {
-    this.jump(0);
+    this.jump();
     this.bendLeg( this.body.leftLeg, 10 );
     this.bendLeg( this.body.rightLeg, 10 );
   }

@@ -20,13 +20,13 @@ export class VRSpaceUI {
     /** Path to logo, null defaults to contentBase+/babylon (vrspace.org logo)*/
     this.logoPath = null;
     /** Logo file name, defaults to logo.glb */
-    this.logoFile = "logo.glb";
+    this.logoFile = "PortalRoomSmall2.glb";
     /** vrspace.org logo mesh */
     this.logo = null;
     /** Path to logo, null defaults to contentBase+/babylon/portal */
     this.portalPath = null;
     /** Portal file name, defaults to scene.gltf */
-    this.portalFile = "scene.gltf";
+    this.portalFile = "PortalTexured.glb";
     /** portal mesh */
     this.portal = null;
     /** debug output enabled */
@@ -70,6 +70,7 @@ export class VRSpaceUI {
       this.assetLoader = new AssetLoader(this.scene);
       // TODO figure out location of script
       var container = await BABYLON.SceneLoader.LoadAssetContainerAsync(this.logoDir(),this.logoFile,this.scene);
+
       this.logo = container.meshes[0];
       for ( var i = 0; i < container.meshes; i++ ) {
         container.meshes[i].checkCollisions = false;
@@ -127,7 +128,9 @@ export class VRSpaceUI {
       container.materials[0].metallic = 0.85;
       
       this.portal = container.createRootMesh();
-      this.portal.rotation = new BABYLON.Vector3(0,Math.PI/2,0);
+      this.portal.rotation = new BABYLON.Vector3(0,0,0);
+      this.portal.position = new BABYLON.Vector3(0,0.25,0);
+      this.portal.scaling = new BABYLON.Vector3(1,1,1);
       this.portal.name = 'Portal';
       //container.addAllToScene();
     }

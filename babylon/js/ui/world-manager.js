@@ -729,6 +729,7 @@ export class WorldManager {
         } else {
           VRSPACE.sendCommand("Session");
           this.world.entered(welcome)
+          this?.world?.loadMash();
           resolve(welcome);
         }
       };
