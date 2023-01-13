@@ -89,7 +89,7 @@ public class StreamManager {
       String name = client.getWorld().getName();
       Session session = sessions.get(name);
       if (session != null) {
-        session.fetch();
+        //session.fetch();
         List<Connection> activeConnections = session.getActiveConnections();
         log.debug(
             "Disconnecting client " + client.getId() + ", current active connections " + activeConnections.size());
