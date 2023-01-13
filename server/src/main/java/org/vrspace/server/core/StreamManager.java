@@ -41,9 +41,6 @@ public class StreamManager {
 
   private Session startStreamingSession(String name) throws OpenViduException {
     Session ret = null;
-    log.info("Start Stream Name " + name);
-    log.info("OpenVidu " + openViduUrl);
-    log.info("OpenSecret " + openViduSecret);
     OpenVidu openVidu = new OpenVidu(openViduUrl, openViduSecret);
     SessionProperties properties = new SessionProperties.Builder().customSessionId(name).build();
     try {
@@ -71,7 +68,6 @@ public class StreamManager {
     // token is something like
     // wss://localhost:4443?sessionId=cave&token=tok_W1LlxOQElNQGcSIw&role=PUBLISHER&version=2.15.0
     String token = null;
-   log.info("Generate Token for client " , client);
     try {
       token = session.createConnection(connectionProperties).getToken();
     } catch (OpenViduHttpException e) {
@@ -80,8 +76,6 @@ public class StreamManager {
         log.error("Error generating token - session not found. Creating new session", e);
         session = startStreamingSession(session.getSessionId());
         token = session.createConnection(connectionProperties).getToken();
-       log.info("New Token "+ token);
-       log.info("Session " +  session);
       } else {
         throw e;
       }
@@ -92,10 +86,8 @@ public class StreamManager {
   public void disconnect(Client client) throws OpenViduException {
     // client is only connected if it has session token
     if (client.getToken(serviceId) != null && client.getWorld() != null) {
-      //Client user1 = sessionManager.getClient(client.getId());
-      String name ="classroom"; //client.getWorld().getName();
+      String name = client.getWorld().getName();
       Session session = sessions.get(name);
-      log.info("Name is in disconnect " + name);
       if (session != null) {
         session.fetch();
         List<Connection> activeConnections = session.getActiveConnections();
@@ -125,16 +117,12 @@ public class StreamManager {
    * @param world
    */
   public void join(Client client, World world) {
-    log.info("openvidu " + openViduUrl);
-    log.info("Secret " + openViduSecret);
-    log.info("Client is " + client);
-    log.info("World is " + world.getName());
     if (!"none".equals(openViduUrl) && !"none".equals(openViduSecret)) {
-     // try {
-     //   disconnect(client);
-     // } catch (OpenViduException e) {
-     //   log.error("Failed to disconnect client " + client, e);
-     // }
+      try {
+        disconnect(client);
+      } catch (OpenViduException e) {
+        log.error("Failed to disconnect client " + client, e);
+      }
       try {
         Session session = startStreamingSession(world.getName());
         try {

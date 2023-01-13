@@ -310,23 +310,18 @@ public class WorldManager {
   }
 
   public Welcome enter(Client client, String worldName) {
-   log.info("Enter World name " + worldName);
-   log.info("Enter Client " + client); 
     World world = getOrCreateWorld(worldName);
     return enter(client, world);
   }
 
   public Welcome enter(Client client, World world) {
-  log.info("Client " +client);
-  //log.info("Client World " , client.getWorld());
-  log.info("World " +world);
-  //  if (client.getWorld() != null) {
-  //    if (client.getWorld().equals(world)) {
-  //      throw new IllegalArgumentException("Already in world " + world);
-  //    }
+    if (client.getWorld() != null) {
+      if (client.getWorld().equals(world)) {
+        throw new IllegalArgumentException("Already in world " + world);
+      }
       // exit current world first
-  //    exit(client);
-  //  }
+      exit(client);
+    }
     // create audio stream
     streamManager.join(client, world);
 
