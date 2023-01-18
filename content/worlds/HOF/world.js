@@ -174,6 +174,7 @@ export class Classroom extends World {
 
   // executed once connected to the server and entered the space
   entered(welcome) {
+    console.log("Revert Commit")
     this.screencast = new Screencast(this, 'teacher');
     this.screencast.screenShareMesh.position = new BABYLON.Vector3(5, 1.5, -17);
     this.screencast.screenShareMesh.rotation = new BABYLON.Vector3(0, Math.PI, 0);
