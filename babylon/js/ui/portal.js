@@ -25,10 +25,6 @@ export class Portal {
     this.controls = [];
     this.textures = [];
     this.materials = [];
-    this.soundUrl = "/babylon/portal/couchhero_portal-idle.mp3";
-    this.soundDistance = 5;
-    this.soundVolume = .5;
-    
   }
   /** handy, returns base url and folder name */
   worldUrl() {
@@ -36,10 +32,6 @@ export class Portal {
   }
   /** dispose of everything */
   dispose() {
-    this.playSound(false);
-    if (this.sound) {
-      this.sound.dispose();
-    }
     this.group.dispose();
     if (this.thumbnail) {
       this.thumbnail.dispose();
@@ -127,39 +119,7 @@ export class Portal {
     //this.controls.push(titleText); // CHECKME doesn's seem required
     this.textures.push(titleTexture);
     
-    this.attachSound();
-    
     return this;
-  }
-  attachSound() {
-    if ( this.soundUrl ) {
-      this.sound = new BABYLON.Sound(
-        "portalSound",
-        this.soundUrl,
-        this.scene, null, {
-          loop: true,
-          autoplay: false,
-          spatialSound: true,
-          streaming: false,
-          distanceModel: "linear",
-          maxDistance: this.soundDistance, // default 100, used only when linear
-          panningModel: "equalpower" // or "HRTF"
-        });
-      this.sound.attachToMesh(this.group);
-      this.sound.setVolume(this.soundVolume);
-    }
-  }
-  playSound(enable) {
-    if ( this.sound ) {
-      if ( enable ) {
-        this.sound.play();
-        // chrome hacks
-        BABYLON.Engine.audioEngine.audioContext?.resume();
-        BABYLON.Engine.audioEngine.setGlobalVolume(1);        
-      } else if ( this.sound ) {
-        this.sound.stop();
-      }
-    }
   }
   showTitle() {
     if ( this.titleText ) {
@@ -188,7 +148,6 @@ export class Portal {
     }
     this.title.isVisible = enable;
     this.isEnabled = enable;
-    this.playSound(enable);
   }
   /** Executes callback on entry */
   enter() {
