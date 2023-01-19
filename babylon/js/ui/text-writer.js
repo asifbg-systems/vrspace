@@ -26,7 +26,7 @@ export class TextWriter {
   async _initWriter() {
     if ( ! this.Writer ) {
       await VRSPACEUI.loadScriptsToDocument([ 
-        "/babylon/js/lib/meshwriter.min.js"
+        "./js/lib/meshwriter.min.js"
       ]);
       this.Writer = BABYLON.MeshWriter(this.scene, this.writerProperties);
       console.log("TextWriter loaded");

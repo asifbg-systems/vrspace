@@ -85,7 +85,7 @@ export class VRSpaceUI {
     if ( this.logoPath ) {
       return this.logoPath;
     }
-    return this.contentBase+"/babylon/";
+    return this.contentBase+"/";
   }
   
   /** Returns portalPath if exists, defaults to contentBase+/babylon/portal */
@@ -93,7 +93,7 @@ export class VRSpaceUI {
     if ( this.portalPath ) {
       return this.portalPath;
     }
-    return this.contentBase+"/babylon/portal/";
+    return this.contentBase+"/portal/";
   }
   /** Creates default LoadProgressIndicator bound to given camera, if one does not already exist.
   @param scene
