@@ -19,6 +19,7 @@ import org.vrspace.server.obj.ContentCategory;
 import org.vrspace.server.obj.Embedded;
 import org.vrspace.server.obj.Entity;
 import org.vrspace.server.obj.GltfModel;
+import org.vrspace.server.obj.Ownership;
 import org.vrspace.server.obj.Point;
 import org.vrspace.server.obj.VRObject;
 import org.vrspace.server.obj.World;
@@ -39,8 +40,14 @@ public interface VRObjectRepository extends Neo4jRepository<Entity, Long>, VRSpa
     throw new UnsupportedOperationException("This doesn't work, use deleteById(Class<T> cls, Long id) instead");
   }
 
+  // this returns shallow object - does not retrieve members
   @Query("MATCH (o:VRObject{permanent:true})-[r:IN_WORLD]->(w:World) WHERE ID(w)=$worldId RETURN o")
   Set<VRObject> getPermanents(Long worldId);
+
+  // default Set<VRObject> getPermanents(Long worldId) {
+  // return _getPermanents(worldId).stream().map(o -> get(o.getClass(),
+  // o.getId())).collect(Collectors.toSet());
+  // }
 
   // this returns shallow object - does not retrieve members
   // @Query("MATCH (o) WHERE ID(o) = $id RETURN *")
@@ -136,5 +143,33 @@ public interface VRObjectRepository extends Neo4jRepository<Entity, Long>, VRSpa
       ret.add(status);
     }
     return ret;
+  }
+
+  // WARNING this doesn't return full, useful owned VRObject - position and other
+  // members are missing
+  @Query("MATCH (obj:VRObject)<-[owned:IS_OWNED]-(o:Ownership)-[owns:IS_OWNER]->(c:Client)"
+      + " WHERE ID(c) = $clientId RETURN o,owns,c,owned,obj")
+  List<Ownership> getOwnership(long clientId);
+
+  default List<Ownership> getOwned(long ownerId) {
+    List<Ownership> ret = new ArrayList<>();
+    for (Ownership o : getOwnership(ownerId)) {
+      ret.add(get(Ownership.class, o.getId()));
+    }
+    return ret;
+  }
+
+  // WARNING this doesn't return full, useful owned VRObject - position and other
+  // members are missing
+  @Query("MATCH (obj:VRObject)<-[owned:IS_OWNED]-(o:Ownership)-[owns:IS_OWNER]->(c:Client)"
+      + " WHERE ID(c) = $ownerId AND ID(obj) = $ownedId RETURN o,owns,c,owned,obj")
+  Optional<Ownership> findOwnership(long ownerId, long ownedId);
+
+  default Ownership getOwnership(long ownerId, long ownedId) {
+    Optional<Ownership> optOwnership = findOwnership(ownerId, ownedId);
+    if (optOwnership.isPresent()) {
+      return get(Ownership.class, optOwnership.get().getId());
+    }
+    return null;
   }
 }

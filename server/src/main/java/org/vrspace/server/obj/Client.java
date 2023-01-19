@@ -2,13 +2,10 @@ package org.vrspace.server.obj;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator;
 import org.vrspace.server.core.Scene;
@@ -36,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@ToString(callSuper = false)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @Node
 @Owned
 @Slf4j
@@ -45,7 +42,10 @@ public class Client extends VRObject {
    * Client name - unique ID.
    */
   // @Index(unique = true) - NeoConfig creates it
+  @ToString.Include
   private String name;
+  /** Does this client have humanoid avatar, default true */
+  private boolean isHumanoid = true;
   /**
    * Left arm position, used in VR. Transient biometric data.
    */
@@ -71,15 +71,6 @@ public class Client extends VRObject {
    */
   @Transient
   transient private Double userHeight;
-  /**
-   * Owned objects.
-   */
-  @JsonIgnore
-  @Relationship(type = "OWNS", direction = Relationship.Direction.OUTGOING)
-  private Set<VRObject> owned;
-  /**
-   * Properties of the scene - how far a user sees, how much objects...
-   */
   @Private
   @Transient
   transient private SceneProperties sceneProperties;
@@ -135,6 +126,7 @@ public class Client extends VRObject {
    */
   @JsonIgnore
   @Transient
+  @ToString.Include
   transient private boolean guest;
 
   public Client() {
@@ -208,44 +200,6 @@ public class Client extends VRObject {
       log.error("Can't send message " + obj, e);
     }
 
-  }
-
-  /**
-   * Add some owned objects to this client. By default, all objects created by a
-   * client become owned.
-   * 
-   * @param objects
-   */
-  public void addOwned(VRObject... objects) {
-    if (owned == null) {
-      owned = new HashSet<VRObject>();
-    }
-    for (VRObject obj : objects) {
-      owned.add(obj);
-    }
-  }
-
-  /**
-   * Remove owned objects, i.e. give up ownership.
-   * 
-   * @param objects
-   */
-  public void removeOwned(VRObject... objects) {
-    if (owned != null) {
-      for (VRObject obj : objects) {
-        owned.remove(obj);
-      }
-    }
-  }
-
-  /**
-   * Is this object owned by this client? Also, a client owns itself.
-   * 
-   * @param obj
-   * @return
-   */
-  public boolean isOwner(VRObject obj) {
-    return this.equals(obj) || owned != null && obj != null && owned.contains(obj);
   }
 
   /** Returns token for a given service */

@@ -16,7 +16,7 @@ export class Classroom extends World {
       "city/scene.gltf":{
         instances:[
           {
-            scale:{x:0,y:0,z:0},
+            scale:{x:200,y:200,z:200},
             position:{x:100,y:68.7,z:-350},
             rotation:{x:0,y:5.69,z:0}
           }

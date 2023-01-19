@@ -58,7 +58,7 @@ public class Dispatcher {
     VRObject source = event.getSource();
 
     // ownership check
-    if (!event.getClient().isOwner(source)) {
+    if (!event.isOwner()) {
       if (source.getClass().isAnnotationPresent(Owned.class)) {
         throw new SecurityException("Cannot change owned object'");
       } else {
@@ -103,6 +103,8 @@ public class Dispatcher {
     if (event.getChanges().size() > 0) {
       source.notifyListeners(event);
     }
+    // and then finally notify the object
+    source.changed();
   }
 
   // returns Set of annotated private fields on class
